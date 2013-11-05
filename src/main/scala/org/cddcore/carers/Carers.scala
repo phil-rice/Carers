@@ -52,6 +52,8 @@ object Carers {
   implicit def worldStringToCarers(x: Tuple2[World, String]) = CarersXmlSituation(x._1, Xmls.validateClaim(x._2))
   //  implicit def carersToWorld(x: CarersXmlSituation) = x.w
   //  implicit def carersToElem(x: CarersXmlSituation) = x.e
+  
+   val changeRequest = Document(name = Some("CR24"), url = Some("http://en.wikipedia.org/wiki/Tennis_score"))
 
   val engine = Engine[CarersXmlSituation, ReasonAndAmount]().
     code((c: CarersXmlSituation) => ReasonAndAmount("carer.default.notPaid")).
@@ -64,7 +66,7 @@ object Carers {
     }).
 
     useCase("Hours1 - Customers with Hours of caring must be 35 hours or more in any one week").
-    scenario((World("2010-1-1"), "CL100105A"), "CL100105A-lessThen35Hours").
+    scenario((World("2010-1-1"), "CL100105A"), "CL100105A-lessThen35Hours").reference("1.3", changeRequest).
     expected(ReasonAndAmount("carer.claimant.under35hoursCaring")).
     because((c: CarersXmlSituation) => !c.Claim35Hours()).
 
@@ -76,7 +78,7 @@ object Carers {
     useCase("Residence 3- Customer who is not considered resident and present in GB is not entitled to CA.").
     scenario((World("2010-6-7"), "CL100107A"), "CL100107A-notInGB").
     expected(ReasonAndAmount("carers.claimant.notResident")).
-    because((c: CarersXmlSituation) => !c.ClaimAlwaysUK()).
+    because((c: CarersXmlSituation) => !c.ClaimAlwaysUK()). 
 
     useCase("Presence 2- Customers who have restrictions on their immigration status will be disallowed CA.").
     scenario((World("2010-6-7"), "CL100108A"), "CL100108A-restriction on immigration status").

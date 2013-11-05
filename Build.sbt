@@ -13,7 +13,7 @@ scalaVersion := "2.10.1"
 unmanagedClasspath in Runtime <+= (baseDirectory) map { bd => Attributed.blank(bd / "src/main/resources") }
 
 libraryDependencies ++= Seq(
-    "org.cddcore" %% "website" % "1.6.3-SNAPSHOT",
+    "org.cddcore" %% "website" % "1.6.4",
     "com.sun.jersey" % "jersey-server" % "1.2",
     "com.sun.jersey" % "jersey-json" % "1.2",
     "org.eclipse.jetty" % "jetty-server" % "8.0.0.M0",
