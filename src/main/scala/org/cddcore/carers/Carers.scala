@@ -1,12 +1,13 @@
 package org.cddcore.carers
 
 import scala.language.implicitConversions
-import scala.xml.Elem
 
+import scala.xml.Elem
 import org.cddcore.engine._
 import org.cddcore.engine.tests.CddJunitRunner
 import org.joda.time.DateTime
 import org.junit.runner.RunWith
+import scala.xml.XML
 
 case class CarersXmlSituation(w: World, e: Elem) extends XmlSituation {
   import Xml._
@@ -58,7 +59,7 @@ object Carers {
 
   val changeRequest = Document(name = Some("CR24"), url = Some("http://en.wikipedia.org/wiki/Tennis_score"))
 
-  val engine = Engine[CarersXmlSituation, ReasonAndAmount]().
+  val engine = Engine[CarersXmlSituation, ReasonAndAmount]().param((s: String) => CarersXmlSituation(World("2010-6-9"), XML.loadString(s)), "Validate Claim XML").
     code((c: CarersXmlSituation) => ReasonAndAmount("carer.default.notPaid")).
     useCase("Customers under age 16 are not entitled to CA").
     scenario((World("2010-6-9"), "CL100104A"), "Cl100104A-Age Under 16").
