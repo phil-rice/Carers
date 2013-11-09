@@ -30,7 +30,6 @@ case class CarersXmlSituation(w: World, e: Elem) extends XmlSituation {
 
   lazy val expenses = Expenses.expenses(w, e)
   lazy val income = Income.income(w, e)
-
   //  lazy val howLongHasClaimBeenActiveInWeeks = 
 
   lazy val nettIncome: Option[Double] =
@@ -42,6 +41,10 @@ case class CarersXmlSituation(w: World, e: Elem) extends XmlSituation {
       case Some(i) => i < 100
       case _ => false
     }
+  lazy val underSixteen = birthdate.get() match {
+    case Some(bd) => bd.plusYears(16).isAfter(w.today)
+    case _ => false
+  }
   override def toString = getClass.getSimpleName() + s"(\n  expenses=${expenses}\n  income=${income}\n  nettIncome=${nettIncome}\n  incomeOk = ${incomeOk}\n  ${fragmentsToString}\n${xmlsToString})"
 
 }
@@ -52,18 +55,15 @@ object Carers {
   implicit def worldStringToCarers(x: Tuple2[World, String]) = CarersXmlSituation(x._1, Xmls.validateClaim(x._2))
   //  implicit def carersToWorld(x: CarersXmlSituation) = x.w
   //  implicit def carersToElem(x: CarersXmlSituation) = x.e
-  
-   val changeRequest = Document(name = Some("CR24"), url = Some("http://en.wikipedia.org/wiki/Tennis_score"))
+
+  val changeRequest = Document(name = Some("CR24"), url = Some("http://en.wikipedia.org/wiki/Tennis_score"))
 
   val engine = Engine[CarersXmlSituation, ReasonAndAmount]().
     code((c: CarersXmlSituation) => ReasonAndAmount("carer.default.notPaid")).
     useCase("Customers under age 16 are not entitled to CA").
     scenario((World("2010-6-9"), "CL100104A"), "Cl100104A-Age Under 16").
     expected(ReasonAndAmount("carer.claimant.under16")).
-    because((c: CarersXmlSituation) => c.birthdate.get() match {
-      case Some(bd) => bd.plusYears(16).isAfter(c.w.today)
-      case _ => false
-    }).
+    because((c: CarersXmlSituation) => c.underSixteen).
 
     useCase("Hours1 - Customers with Hours of caring must be 35 hours or more in any one week").
     scenario((World("2010-1-1"), "CL100105A"), "CL100105A-lessThen35Hours").reference("1.3", changeRequest).
@@ -75,10 +75,11 @@ object Carers {
     expected(ReasonAndAmount("carer.qualifyingBenefit.dpWithoutRequiredLevelOfQualifyingBenefit")).
     because((c: CarersXmlSituation) => c.DependantAwardComponent() != "DLA Middle Rate Care").
 
+    
     useCase("Residence 3- Customer who is not considered resident and present in GB is not entitled to CA.").
     scenario((World("2010-6-7"), "CL100107A"), "CL100107A-notInGB").
     expected(ReasonAndAmount("carers.claimant.notResident")).
-    because((c: CarersXmlSituation) => !c.ClaimAlwaysUK()). 
+    because((c: CarersXmlSituation) => !c.ClaimAlwaysUK()).
 
     useCase("Presence 2- Customers who have restrictions on their immigration status will be disallowed CA.").
     scenario((World("2010-6-7"), "CL100108A"), "CL100108A-restriction on immigration status").
