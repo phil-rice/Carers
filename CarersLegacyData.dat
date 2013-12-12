@@ -1,0 +1,13 @@
+2010-6-9,CL100104A,carer.claimant.under16
+2010-1-1,CL100105A,carer.claimant.under35hoursCaring
+2010-6-23,CL100106A,carer.qualifyingBenefit.dpWithoutRequiredLevelOfQualifyingBenefit
+2010-6-7,CL100107A,carers.claimant.notResident
+2010-6-7,CL100108A,carers.claimant.restriction.immigrationStatus
+2010-2-10,CL100109A,carers.claimant.fullTimeEduction.moreThan21Hours
+2010-3-22,CL100110A,carers.validClaim,95
+2010-3-8,CL100111A,carers.validClaim,95
+2010-3-8,CL100112A,carers.validClaim,95
+2010-6-1,CL100113A,carers.nettIncome.moreThan100PerWeek
+2010-3-8,CL100114A,carers.nettIncome.moreThan100PerWeek
+2010-6-1,CL100115A,carers.income.rental
+2010-3-1,CL100116A,carers.income.rental

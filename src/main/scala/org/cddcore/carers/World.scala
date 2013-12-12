@@ -133,7 +133,18 @@ case class World(today: DateTime, dateOfClaim: DateTime, ninoToCis: NinoToCis) e
 case class KeyAndParams(reason: String, params: Any*)
 
 case class ReasonAndAmount(amount: Option[Double], reason: KeyAndParams)
-case class ReasonsAndAmount(amount: Option[Double], reasons: List[KeyAndParams])
+case class ReasonsAndAmount(amount: Option[Double], reasons: List[KeyAndParams]) {
+  //  def this(ra: ReasonAndAmount) = this(ra.amount, List(ra.reason))
+  def this(amount: Double, reason: String, params: Any*) = this(Some(amount), List(new KeyAndParams(reason, params)))
+  def this(amount: Option[Double], reason: String, params: Any*) = this(amount, List(new KeyAndParams(reason, params)))
+  def +(ra: ReasonAndAmount): ReasonsAndAmount = (amount, ra) match {
+    case (amount, ReasonAndAmount(None, reason)) => ReasonsAndAmount(amount, reason :: this.reasons)
+    case (None, ReasonAndAmount(amount, reason)) => ReasonsAndAmount(amount, reason :: this.reasons)
+    case _ => throw new IllegalStateException("cannot have two amounts")
+  }
+  def +(optRa: Option[ReasonAndAmount]): ReasonsAndAmount = optRa match { case Some(ra) => this + ra; case _ => this }
+
+}
 
 object ReasonAndAmount {
   def apply(amount: Double, reason: String, params: Any*): ReasonAndAmount = ReasonAndAmount(Some(amount), KeyAndParams(reason, params: _*))
