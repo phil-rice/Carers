@@ -3,8 +3,8 @@
 <CISQuery xsi:schemaLocation="http://www.autotdd.com/ca CISquery%20v1_0%202010-07-05.xsd" xmlns="http://www.autotdd.com/ca" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<NameInfo>
 		<PersonNameTitle>MRS</PersonNameTitle>
-		<PersonGivenName>MAUREEN</PersonGivenName>
-		<PersonFamilyName>HEPWORTH</PersonFamilyName>
+		<PersonGivenName>A</PersonGivenName>
+		<PersonFamilyName>BROWN</PersonFamilyName>
 		<PersonNameStartDate>1939-10-10</PersonNameStartDate>
 	</NameInfo>
 	<PersonalInfo>
@@ -32,9 +32,9 @@
 		<RelationshipStartDate>1970-10-12</RelationshipStartDate>
 	</Relationships>
 	<Addresses>
-		<Line>9 HALL MEWS </Line>
-		<Line>BOSTON SPA</Line>
-		<PostCode>LS23 6QB</PostCode>
+		<Line>1 HALL ROAD </Line>
+		<Line>LONDON</Line>
+		<PostCode>LS7 7HG</PostCode>
 		<AddressStartDate>2003-11-05</AddressStartDate>
 	</Addresses>
 	<Award>

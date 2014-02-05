@@ -4,11 +4,14 @@ import org.junit.runner.RunWith
 import org.cddcore.engine.tests.CddJunitRunner
 import org.cddcore.engine.Engine
 import scala.xml.Elem
+import org.cddcore.engine.Document
 
 @RunWith(classOf[CddJunitRunner])
 object Income {
 
-  val income = Engine[World, Elem, ReasonAndAmount]().
+  val doors = Document(title = Some("Doors"), url=Some("What ever it is"))
+  
+  val income = Engine[World, Elem, ReasonAndAmount]().title("Income").reference("", doors).
     useCase("No employmentData").
     scenario(World(), <root/>).
     expected(ReasonAndAmount("income.notEmployed")).

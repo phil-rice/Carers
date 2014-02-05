@@ -35,9 +35,9 @@
 		<RelationshipStartDate>1996-12-10</RelationshipStartDate>
 	</Relationships>
 	<Addresses>
-		<Line1>16 YEARS OLD</Line1>
+		<Line1>4 FINE GROVE</Line1>
 		<Line2>MILTON KEYNES</Line2>
-		<PostCode>MK1 1AA</PostCode>
-		<AddressStartDate>1996-12-10</AddressStartDate>
+		<PostCode>AL5 9IK</PostCode>
+		<AddressStartDate>2003-11-05</AddressStartDate>
 	</Addresses>
 </CISQuery>

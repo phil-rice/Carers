@@ -36,7 +36,7 @@
 	<Addresses>
 		<Line1>1 BREAK</Line1>
 		<Line2>IN-CARE</Line2>
-		<PostCode>BC1 1AA</PostCode>
+		<PostCode>AD3 28HG</PostCode>
 		<AddressStartDate>1990-01-01</AddressStartDate>
 	</Addresses>
 </CISQuery>

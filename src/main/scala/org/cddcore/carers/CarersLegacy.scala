@@ -1,5 +1,4 @@
 package org.cddcore.carers
-
 import scala.language.implicitConversions
 import org.cddcore.engine._
 import org.legacycdd.legacy.LegacyData
@@ -9,9 +8,11 @@ import org.legacycdd.legacy.MemoryReporter
 import scala.io.Source
 import scala.xml.XML
 import scala.xml.Elem
+import scala.Array.canBuildFrom
 
 object LegacyParser {
-  def toParams = (s: String) => {
+  def toParams = (
+    s: String) => {
     val parts = s.split(",");
     CarersXmlSituation(World(parts(0)), Xmls.validateClaim(parts(1)))
   }

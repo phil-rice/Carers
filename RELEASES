@@ -16,3 +16,13 @@
 1.7.3 Can now make traces, although not using them yet
 1.8.0 Engines can have child engines, and a folding function to aggregate the results
 1.8.1 Stabilisation: JUnit works better with child engines
+1.8.2 Stabilisation: Legacy works better
+1.8.3 Continuous Integration, first examples now work
+1.8.5 The documentation view and project index page now added to a JUnit run
+1.8.5.1 Fixed minor bug when using engine in default package
+1.8.5.2 Minor error message improvements, minor report improvements
+1.8.5.3 Reports now appear in textOrder
+1.8.5.4 ContinuousIntegrationRunner now produces reports
+1.8.5.5 Reducing verbosity of Junit run
+1.8.5.6 Junit runs produce a merged report
+

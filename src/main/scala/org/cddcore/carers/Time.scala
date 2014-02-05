@@ -1,12 +1,10 @@
 package org.cddcore.carers
 
 import org.junit.runner.RunWith
-import org.cddcore.engine.Engine
-import org.cddcore.engine.tests.CddJunitRunner
-import scala.xml.Elem
-import org.joda.time.DateTime
 import scala.language.implicitConversions
-import org.joda.time.DateTimeField
+import org.cddcore.engine.Engine
+import org.joda.time.DateTime
+import org.cddcore.engine.tests.CddJunitRunner
 
 class IllegalDateRangeException(val dateRange: DateRange) extends Exception(dateRange.toString())
 

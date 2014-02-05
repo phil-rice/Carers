@@ -1,4 +1,4 @@
-package org.cddcore.timing
+package org.cddcore.carers
 
 import org.cddcore.carers._
 import scala.concurrent.stm._
@@ -45,7 +45,7 @@ trait SystemPerformanceTimer {
 }
 
 class CarersPerformanceTimer extends PerformanceTimer with SystemPerformanceTimer {
-  final val engine =  Carers.engine
+  final val engine =   Carers.engine
 
   def getDataItem(i: Int): List[Any] = List(CarersXmlSituation(World("2010-6-9"), Xmls.validateClaim("CL100104A")))
   def call(params: List[Any]) {

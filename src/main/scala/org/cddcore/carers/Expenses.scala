@@ -1,6 +1,7 @@
 package org.cddcore.carers
 
 import scala.language.implicitConversions
+
 import org.cddcore.engine.Engine
 import scala.xml.Elem
 import org.junit.runner.RunWith
@@ -117,10 +118,10 @@ object Expenses {
       occupationalExpenses(w, x))).
     build */
 
-  implicit def elemToCarersXmlSitation(e: Elem) = CarersXmlSituation(World("2010-10-1"), e);
   implicit def reasonAndAmountToOption(ra: ReasonAndAmount) = Some(ra)
   val defaultWorld = World()
   val expenses = Engine.folding[World, Elem, Option[ReasonAndAmount], ReasonsAndAmount](_ + _, ReasonsAndAmount(None, List())).
+    title("Expenses").
     code((w: World, e: Elem) => None).
     childEngine("Child care expenses").
     useCase("No Child expenses").
@@ -153,8 +154,9 @@ object Expenses {
     code((w: World, e: Elem) => Some(ReasonAndAmount(Xmls.asFloat((e \\ "ExpensesChildAmount").text) / 2, "expense.child.valid"))).
     expected(ReasonAndAmount(15, "expense.child.valid")).
 
-    childEngine("PSN  Pensions").
-    useCase("No Psn Pension").
+    childEngine("PSN  Pensions", "PSN Pensions are about valuable stuff").
+    reference("2.1", None).
+    useCase("No Psn Pension"). //<--- automatically be Employment.5.1
     scenario(defaultWorld, <ExpensesData>
                              <ExpensesOccPension>no</ExpensesOccPension>
                              <ExpensesPsnPension>no</ExpensesPsnPension>
@@ -166,7 +168,7 @@ object Expenses {
                              <ExpensesCareDP>no</ExpensesCareDP>
                            </ExpensesData>, "xxx").
     expected(None).
-    useCase("Psn Pension").
+    useCase("Psn Pension"). //<--- automatically be Employment.5.2
     scenario(defaultWorld, <ExpensesData>
                              <ExpensesOccPension>no</ExpensesOccPension>
                              <ExpensesPsnPension>yes</ExpensesPsnPension>
@@ -179,6 +181,7 @@ object Expenses {
     expected(ReasonAndAmount(15, "expense.pension.private.valid")).
     because((w: World, e: Elem) => Xmls.asYesNo((e \\ "ExpensesPsnPension").text)).
     code((w: World, e: Elem) => Some(ReasonAndAmount(Xmls.asFloat((e \\ "ExpensesPsnPensionAmount").text) / 2, "expense.pension.private.valid"))).
+
     childEngine("Occupational Pension").
     useCase("No occupational pension").
     scenario(defaultWorld, <ExpensesData>
