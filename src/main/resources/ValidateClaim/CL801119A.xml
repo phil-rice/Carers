@@ -4,7 +4,7 @@
 	<piid>String</piid>
 	<newClaimantData>true</newClaimantData>
 	<ClaimantData>
-		<ClaimantNINO>CL100119A</ClaimantNINO>
+		<ClaimantNINO>CL800119A</ClaimantNINO>
 		<ClaimantNameDetails>
 			<PersonNameTitle>MR</PersonNameTitle>
 			<PersonGivenName>BREAK</PersonGivenName>
@@ -37,7 +37,7 @@
 	</ClaimantData>
 	<newClaimData>true</newClaimData>
 	<ClaimData>
-		<ClaimStartDate>2010-05-17</ClaimStartDate>
+		<ClaimStartDate>2010-01-01</ClaimStartDate>
 		<ClaimNinoKnown>yes</ClaimNinoKnown>
 		<ClaimPrevious>no</ClaimPrevious>
 		<ClaimOverseas>no</ClaimOverseas>
@@ -52,14 +52,7 @@
 		<ClaimRivalCarer>no</ClaimRivalCarer>
 		<Claim35Hours>yes</Claim35Hours>
 		<ClaimBreakInCare>yes</ClaimBreakInCare>
-		<ClaimBreaks>
-			<BreakInCare>
-				<BICFromDate>2010-05-30</BICFromDate>
-				<BICToDate>2010-06-13</BICToDate>
-				<BICReason>Hospitalisation</BICReason>
-				<BICType>Hospital</BICType>
-			</BreakInCare>
-		</ClaimBreaks>
+		<ClaimBreaks />
 		<ClaimPrior35Hours>yes</ClaimPrior35Hours>
 		<ClaimPrior35HoursDate>2010-05-17</ClaimPrior35HoursDate>
 		<ClaimPriorBreakInCare>no</ClaimPriorBreakInCare>
@@ -72,7 +65,7 @@
 	</ClaimData>
 	<newPartnerData>true</newPartnerData>
 	<PartnerData>
-		<PartnerNINO>DP100119A</PartnerNINO>
+		<PartnerNINO>DP800119A</PartnerNINO>
 		<PartnerNameDetails>
 			<PersonNameTitle>MRS</PersonNameTitle>
 			<PersonGivenName>MANDY</PersonGivenName>
@@ -100,7 +93,7 @@
 	</PartnerData>
 	<newDependantData>true</newDependantData>
 	<DependantData>
-		<DependantNINO>DP100119A</DependantNINO>
+		<DependantNINO>DP800119A</DependantNINO>
 		<DependantNameDetails>
 			<PersonNameTitle>MRS</PersonNameTitle>
 			<PersonGivenName>MANDY</PersonGivenName>

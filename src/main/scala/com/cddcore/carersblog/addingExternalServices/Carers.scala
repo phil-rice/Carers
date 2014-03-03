@@ -39,7 +39,9 @@ class TestNinoToCis extends NinoToCis {
     }
 }
 
-case class KeyAndParams(key: String, params: Any*)
+case class KeyAndParams(key: String, params: Any*) {
+  override def toString = "<" + key + params.mkString("(", ",", ")") + ">"
+}
 
 object Xmls {
   def validateClaim(id: String) = {

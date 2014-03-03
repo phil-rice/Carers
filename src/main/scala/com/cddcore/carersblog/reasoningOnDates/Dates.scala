@@ -1,4 +1,4 @@
-package com.cddcore.carersblog.startingDates
+package com.cddcore.carersblog.reasoningOnDates
 
 import scala.language.implicitConversions
 import org.junit.runner.RunWith
@@ -6,6 +6,7 @@ import org.joda.time.format.DateTimeFormat
 import org.joda.time.DateTime
 import org.cddcore.engine.Engine
 import org.cddcore.engine.tests.CddJunitRunner
+import org.joda.time.Days
 
 object DateRange {
   val formatter = DateTimeFormat.forPattern("yyyy-MM-dd(E)");
@@ -25,10 +26,11 @@ case class DateRange(val from: DateTime, val to: DateTime, val reason: String) {
   import DateRange._
   val valid = to.isAfter(from) || to == from
   val dayOfFrom = from.dayOfWeek();
-
+  val days = Days.daysBetween(from, to).getDays()
   def fromToEndOfFirstWeek(dayToSplit: Int) = DateRange(datesMax(from, firstDayOfWeek(from, dayToSplit)), datesMin(to, lastDayOfWeek(from, dayToSplit)), reason)
   def middleSection(dayToSplit: Int) = DateRange(firstDayOfWeek(from, dayToSplit).plusDays(7), firstDayOfWeek(to, dayToSplit).minusDays(1), reason)
   def startOfLastWeekToEnd(dayToSplit: Int) = DateRange(datesMax(from, firstDayOfWeek(to, dayToSplit)), to, reason)
+  def contains(d: DateTime) = ((d == from) || d.isAfter(from)) && (d == to || d.isBefore(to))
 
   override def toString = s"DateRange($reason,${formatter.print(from)},${formatter.print(to)})"
 }
@@ -44,7 +46,6 @@ object DateRanges {
   val monday = 1
   val saturday = 6
   val sunday = 7
-  implicit def stringStringToCarers(x: Tuple2[String, String]) = CarersXmlSituation(World(x._1, new TestNinoToCis), Xmls.validateClaim(x._2))
 
   implicit def stringToDate(x: String) = Xmls.asDate(x)
   implicit def stringStringToDateRange(x: Tuple3[String, String, String]) = DateRange(Xmls.asDate(x._1), Xmls.asDate(x._2), x._3)

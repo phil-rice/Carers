@@ -1,11 +1,9 @@
 package org.cddcore.carers
 
 import org.cddcore.engine.tests._
+
 import org.junit.runner.RunWith
-import com.cddcore.carersblog.startingDates.Carers
-import com.cddcore.carersblog.startingDates.Expenses
-import com.cddcore.carersblog.startingDates.Income
-import com.cddcore.carersblog.startingDates.DateRanges
+import com.cddcore.carersblog.reasoningOnDates._
 
 /**
  * This class will be swept up by JUnit. It should access all the engines that you want to check
@@ -17,6 +15,8 @@ class CarersContinuousIntegration extends CddContinuousIntegrationTest {
     Carers.engine,
     Carers.guardConditions,
     Carers.interestingDates,
+    Carers.singleBreakInCare,
+    Carers.breaksInCare,
     Income.income,
     Expenses.expenses,
     DateRanges.firstDayOfWeek,
