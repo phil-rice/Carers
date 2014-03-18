@@ -426,20 +426,28 @@ object Carers {
 
     build
 
-  type TimeLineItem = (DateRangesToBeProcessedTogether, List[(DateRange, ReasonsOrAmount)])
+  case class TimeLineItem(events: List[(DateRange, ReasonsOrAmount)]) {
+    val startDate = events.head._1.from
+    val endDate = events.last._1.to
+    val daysInWhichIWasOk = events.foldLeft[Int](0)((acc, tuple) => tuple match {
+      case (dr, Left(_)) => 0
+      case (dr, Right(_)) => dr.days
+    })
+    val wasOk = daysInWhichIWasOk > 2
+    override def toString = s"TimeLineItem($startDate, $endDate, days=$daysInWhichIWasOk, wasOK=$wasOk, dateRange=\n  ${events.mkString("\n  ")})"
+  }
   type TimeLine = List[TimeLineItem]
   /** Returns a DatesToBeProcessedTogether and the days that the claim is valid for */
   def findTimeLine(c: CarersXmlSituation): TimeLine = {
     val dates = interestingDates(c)
     val dayToSplit = DateRanges.sunday
     val result = DateRanges.interestingDatesToDateRangesToBeProcessedTogether(dates, dayToSplit)
-    result.map((drCollection) => {
-      val result =
-        drCollection.dateRanges.map((dr) => {
-          val result = engine(dr.from, c)
-          (dr, result)
-        })
-      (drCollection, result)
+
+    result.map((dateRangeToBeProcessedTogether: DateRangesToBeProcessedTogether) => {
+      TimeLineItem(dateRangeToBeProcessedTogether.dateRanges.map((dr) => {
+        val result = engine(dr.from, c)
+        (dr, result)
+      }))
     })
   }
 
@@ -478,12 +486,13 @@ object Carers {
     println(printer(trace._2.toSeq))
     println
     println(trace._1.value.get.mkString("\n"))
-    //    val file = new File("C:\\users\\phil\\Desktop\\test.html")
-    //    Files.printToFile(file)((p) => p.print(printer(trace._2.toSeq)))
+    val file = new File("C:\\users\\phil\\Desktop\\test.html")
+    Files.printToFile(file)((p) => p.print(printer(trace._2.toSeq)))
   }
 
   def main(args: Array[String]) {
-    htmlMain
+    //    endMain
+    println(findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))).mkString("\n"))
   }
 
 }

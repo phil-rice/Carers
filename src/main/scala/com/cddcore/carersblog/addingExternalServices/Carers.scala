@@ -1,6 +1,7 @@
 package com.cddcore.carersblog.addingExternalServices
 
 import scala.language.implicitConversions
+
 import scala.xml._
 
 import org.cddcore.engine._
