@@ -60,7 +60,8 @@ object Xmls {
   }
   /** The boolean is 'hospitalisation' */
   def validateClaimWithBreaks(breaks: (String, String, Boolean)*): CarersXmlSituation =
-    validateClaimWithBreaksFull(breaks.map((x) => (x._1, x._2, if (x._3) "Hospitalisation" else "other", if (x._3) "Hospital" else "other")): _*)
+    validateClaimWithBreaksFull(
+      breaks.map((x) => (x._1, x._2, if (x._3) "Hospitalisation" else "other", if (x._3) "Hospital" else "other")): _*)
 
   def validateClaimWithBreaksFull(breaks: (String, String, String, String)*): CarersXmlSituation = {
     val url = getClass.getClassLoader.getResource("ValidateClaim/CL801119A.xml")
@@ -426,33 +427,10 @@ object Carers {
 
     build
 
-  case class TimeLineItem(events: List[(DateRange, ReasonsOrAmount)]) {
-    val startDate = events.head._1.from
-    val endDate = events.last._1.to
-    val daysInWhichIWasOk = events.foldLeft[Int](0)((acc, tuple) => tuple match {
-      case (dr, Left(_)) => 0
-      case (dr, Right(_)) => dr.days
-    })
-    val wasOk = daysInWhichIWasOk > 2
-    override def toString = s"TimeLineItem($startDate, $endDate, days=$daysInWhichIWasOk, wasOK=$wasOk, dateRange=\n  ${events.mkString("\n  ")})"
-  }
-  type TimeLine = List[TimeLineItem]
-  /** Returns a DatesToBeProcessedTogether and the days that the claim is valid for */
-  def findTimeLine(c: CarersXmlSituation): TimeLine = {
-    val dates = interestingDates(c)
-    val dayToSplit = DateRanges.sunday
-    val result = DateRanges.interestingDatesToDateRangesToBeProcessedTogether(dates, dayToSplit)
 
-    result.map((dateRangeToBeProcessedTogether: DateRangesToBeProcessedTogether) => {
-      TimeLineItem(dateRangeToBeProcessedTogether.dateRanges.map((dr) => {
-        val result = engine(dr.from, c)
-        (dr, result)
-      }))
-    })
-  }
-
+ 
   def startMain {
-    val trace = Engine.trace(findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))))
+    val trace = Engine.trace(TimeLineCalcs.findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))))
     val printer = TraceItem.print()_
     for (i <- trace._2)
       println(printer(i))
@@ -464,8 +442,8 @@ object Carers {
     ClassFunction(classOf[DateTime], (ldp: LoggerDisplayProcessor, d: DateTime) => DateRange.formatter.print(d)))
 
   def endMain {
-    Engine.trace(findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true)))) //gentle warm up
-    val trace = Engine.trace(findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))))
+    Engine.trace(TimeLineCalcs.findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true)))) //gentle warm up
+    val trace = Engine.trace(TimeLineCalcs.findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))))
 
     val result = trace._2.map((t: TraceItem) => Strings.oneLine(t.took + " " + t.toString(loggerDisplayProcessor))).mkString("\n")
 
@@ -477,8 +455,8 @@ object Carers {
 
   }
   def htmlMain {
-    Engine.trace(findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))))
-    val trace = Engine.trace(findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))))
+    Engine.trace(TimeLineCalcs.findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))))
+    val trace = Engine.trace(TimeLineCalcs.findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))))
 
     val result = trace._2.map((t: TraceItem) => Strings.oneLine(t.took + " " + t.toString(loggerDisplayProcessor))).mkString("\n")
 
@@ -492,7 +470,9 @@ object Carers {
 
   def main(args: Array[String]) {
     //    endMain
-    println(findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true))).mkString("\n"))
+    val tl = TimeLineCalcs.findTimeLine(Xmls.validateClaimWithBreaks(("2010-7-1", "2010-7-10", true)))
+    val stl = TimeLineCalcs.simplifyTimeLine(tl)
+    println(stl.filter(_ match { case (d, ok, r) => d.isBefore("2012-1-1") }).mkString("\n"))
   }
 
 }

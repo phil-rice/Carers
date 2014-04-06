@@ -26,7 +26,7 @@ case class DateRange(val from: DateTime, val to: DateTime, val reason: String) {
   import DateRange._
   val valid = to.isAfter(from) || to == from
   val dayOfFrom = from.dayOfWeek();
-  val days = Days.daysBetween(from, to).getDays()
+  val days = Days.daysBetween(from, to).getDays() + 1
   def fromToEndOfFirstWeek(dayToSplit: Int) = DateRange(datesMax(from, firstDayOfWeek(from, dayToSplit)), datesMin(to, lastDayOfWeek(from, dayToSplit)), reason)
   def middleSection(dayToSplit: Int) = DateRange(firstDayOfWeek(from, dayToSplit).plusDays(7), firstDayOfWeek(to, dayToSplit).minusDays(1), reason)
   def startOfLastWeekToEnd(dayToSplit: Int) = DateRange(datesMax(from, firstDayOfWeek(to, dayToSplit)), to, reason)

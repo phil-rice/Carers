@@ -1,9 +1,9 @@
 package org.cddcore.carers
 
 import org.cddcore.engine.tests._
-
 import org.junit.runner.RunWith
 import com.cddcore.carersblog.reasoningOnDates._
+import org.cddcore.engine.Engine
 
 /**
  * This class will be swept up by JUnit. It should access all the engines that you want to check
@@ -11,7 +11,7 @@ import com.cddcore.carersblog.reasoningOnDates._
  */
 @RunWith(classOf[CddContinuousIntegrationRunner])
 class CarersContinuousIntegration extends CddContinuousIntegrationTest {
-  def engines = List(
+  def engines = Engine.test(List(
     Carers.engine,
     Carers.guardConditions,
     Carers.interestingDates,
@@ -23,5 +23,5 @@ class CarersContinuousIntegration extends CddContinuousIntegrationTest {
     DateRanges.datesToRanges,
     DateRanges.splitIntoStartMiddleEnd,
     DateRanges.interestingDatesToDateRangesToBeProcessedTogether,
-    DateRanges.groupByWeek)
+    DateRanges.groupByWeek))
 }

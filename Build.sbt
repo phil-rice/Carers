@@ -16,8 +16,8 @@ EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource
 unmanagedClasspath in Runtime <+= (baseDirectory) map { bd => Attributed.blank(bd / "src/main/resources") }
 
 libraryDependencies ++= Seq(
-    "org.cddcore" %% "website" % "1.8.5.12",
-    "org.cddcore" %% "legacy" % "1.8.5.12",
+    "org.cddcore" %% "website" % "1.8.5.17",
+    "org.cddcore" %% "legacy" % "1.8.5.17",
     "com.sun.jersey" % "jersey-server" % "1.2",
     "com.sun.jersey" % "jersey-json" % "1.2",
     "org.eclipse.jetty" % "jetty-server" % "8.0.0.M0",

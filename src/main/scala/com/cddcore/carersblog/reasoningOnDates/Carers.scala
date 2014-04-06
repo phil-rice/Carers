@@ -209,7 +209,7 @@ object Carers {
       end.get.isAfter(dateOfInterest)
   }
 
-  val interestingDates = Engine.folding[CarersXmlSituation, List[(DateTime, String)], List[(DateTime, String)]]((acc, opt) => acc ::: opt, List()).title("Interesting Dates").
+  val interestingDates = Engine.folding[CarersXmlSituation, List[(DateTime, String)], List[(DateTime, String)]]((acc, opt) => acc ++ opt, List()).title("Interesting Dates").
     childEngine("BirthDate", "Your birthdate is interesting IFF you become the age of sixteen during the period of the claim").
     scenario("CL100105a").expected(List()).
     scenario("CL1PA100").expected(("2010-7-10", "Sixteenth Birthday")).
@@ -345,33 +345,33 @@ object Carers {
     code((d: DateTime, c: CarersXmlSituation) => None).
 
     childEngine("Age Restriction", "Customers under age 16 are not entitled to Carers Allowance").
-    scenario("2010-6-9", "CL100104A", "Cl100104A-Age Under 16").expected("carer.claimant.under16").
+    scenario("2010-6-9", "CL100104A", "Cl100104A-Age Under 16").expectedAndCode("carer.claimant.under16").
     because((d: DateTime, c: CarersXmlSituation) => c.underSixteenOn(d)).
     scenario("2022-3-1", "CL100104A", "Cl100104A-Age Under 16").expected(None).
 
     childEngine("Caring hours", "Customers with Hours of caring must be 35 hours or more in any one week").
     scenario("2010-1-1", "CL100105A", "CL100105A-lessThen35Hours").
-    expected("carer.claimant.under35hoursCaring").
+    expectedAndCode("carer.claimant.under35hoursCaring").
     because((d: DateTime, c: CarersXmlSituation) => !c.claim35Hours()).
 
     childEngine("Qualifying Benefit", "Dependant Party's without the required level of qualyfing benefit will result in the disallowance of the claim to Carer.").
     scenario("2010-6-23", "CL100106A", "CL100106A-Without qualifying benefit").
-    expected(("carer.qualifyingBenefit.dpWithoutRequiredLevelOfQualifyingBenefit")).
+    expectedAndCode(("carer.qualifyingBenefit.dpWithoutRequiredLevelOfQualifyingBenefit")).
     because((d: DateTime, c: CarersXmlSituation) => !c.dependantHasSufficientLevelOfQualifyingCare).
 
     childEngine("UK Residence", "Customer who is not considered resident and present in GB is not entitled to CA.").
     scenario("2010-6-7", "CL100107A", "CL100107A-notInGB").
-    expected("carers.claimant.notResident").
+    expectedAndCode("carers.claimant.notResident").
     because((d: DateTime, c: CarersXmlSituation) => !c.ClaimAlwaysUK()).
 
     childEngine("Immigration Status", "Customers who have restrictions on their immigration status will be disallowed CA.").
     scenario("2010-6-7", "CL100108A", "CL100108A-restriction on immigration status").
-    expected("carers.claimant.restriction.immigrationStatus").
+    expectedAndCode("carers.claimant.restriction.immigrationStatus").
     because((d: DateTime, c: CarersXmlSituation) => !c.ClaimCurrentResidentUK()).
 
     childEngine("Full Time Eduction", "Customers in Full Time Education 21 hours or more each week are not entitled to CA.").
     scenario("2010-2-10", "CL100109A", "CL100109A-full time education").
-    expected("carers.claimant.fullTimeEduction.moreThan21Hours").
+    expectedAndCode("carers.claimant.fullTimeEduction.moreThan21Hours").
     because((d: DateTime, c: CarersXmlSituation) => c.ClaimEducationFullTime()).
 
     childEngine("High Salary", "Customers who earn more than the threshold value per week are not entitled to CA").
@@ -381,13 +381,13 @@ object Carers {
     scenario("2010-2-10", "CL100112A").expected(None).
     assertion((d: DateTime, c: CarersXmlSituation, optReason: ROrException[Option[KeyAndParams]]) => c.nettIncome == 95).
 
-    scenario("2010-2-10", "CL100113A").expected("carers.income.tooHigh").
+    scenario("2010-2-10", "CL100113A").expectedAndCode("carers.income.tooHigh").
     because((d: DateTime, c: CarersXmlSituation) => c.incomeTooHigh).
 
     childEngine("Breaks in care", "Breaks in care may cause the claim to be invalid").
     scenario("2010-6-1", List(("2010-7-1", "2010-12-20", false)), "Long break in care, but date outside range").expected(None).
     scenario("2010-7-10", List(("2010-7-1", "2010-7-20", false)), "Short break in care when after 22 weeks").expected(None).
-    scenario("2010-12-1", List(("2010-7-1", "2010-12-20", false)), "Long break in care when after 22 weeks").expected("carers.breakInCare").
+    scenario("2010-12-1", List(("2010-7-1", "2010-12-20", false)), "Long break in care when after 22 weeks").expectedAndCode("carers.breakInCare").
     because((d: DateTime, c: CarersXmlSituation) => !breaksInCare(d, c)).
     build
 
